@@ -111,25 +111,33 @@ void ShakerSort(int Massive[], int size) {
 
 void InsertSort(int Massive[], int size) {
     Moves = 0, Compares = 0;
-    int temp = 0, j = 0;
+    int temp, j;
     for (int i = 1; i < size; i++) {
+        temp = Massive[i]; 
         Moves++;
-        temp = Massive[i];
         j = i - 1;
-
+        Compares++;
         while ((j >= 0) && (temp < Massive[j])) {
-            Moves++; Compares++;
             Massive[j + 1] = Massive[j];
-            j--;
+            if (j == i - 1) {
+                Compares--;
+            }
+            Moves++; 
+            Compares++;
+            j = j - 1;
         }
+        Massive[j + 1] = temp; 
         Moves++;
-        Massive[j + 1] = temp;
     }
-    if (Compares == 0) Compares = size - 1;
 }
 
-void ShellSort(int Massive[], int size, int step) {
-    
+
+void ShellSort(int Massive[], int size) {
+    int max = 0;
+    max = pow(2, N / 2 + 1) -1 ;
+    for (int k = max; k >= 1; k = (k - 1) / 2) {
+        cout << k << ' ';
+    }
 }
 
 int main() {
@@ -200,5 +208,7 @@ int main() {
         }
         cout << Tab[i] << "      ";        
     }
+    
+    cout << endl;
     
 }

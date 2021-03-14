@@ -52,7 +52,7 @@ int RunNumber() {
 };
 
 void SelectSort(int Massive[], int size) {  //upgrade commented
-    int Moves = 0, Compares = 0;
+    Moves = 0, Compares = 0;
     for (int i = 0; i < size-1; i++) {
         int min = i;        
             for (int j = i + 1; j < size; j++) {
@@ -66,7 +66,7 @@ void SelectSort(int Massive[], int size) {  //upgrade commented
                 Moves += 3;
 //            }
     }
-    cout << "\nM = " << Moves << " C = " << Compares << endl;
+//    cout << "\nM = " << Moves << " C = " << Compares << endl;
 };
 
 void BubbleSort(int Massive[], int size) { 
@@ -109,136 +109,96 @@ void ShakerSort(int Massive[], int size) {
     //cout << "\nM = " << Moves << " C = " << Compares << endl;
 }
 
+void InsertSort(int Massive[], int size) {
+    Moves = 0, Compares = 0;
+    int temp = 0, j = 0;
+    for (int i = 1; i < size; i++) {
+        Moves++;
+        temp = Massive[i];
+        j = i - 1;
+
+        while ((j >= 0) && (temp < Massive[j])) {
+            Moves++; Compares++;
+            Massive[j + 1] = Massive[j];
+            j--;
+        }
+        Moves++;
+        Massive[j + 1] = temp;
+    }
+    if (Compares == 0) Compares = size - 1;
+}
+
+void ShellSort(int Massive[], int size, int step) {
+    
+}
+
 int main() {
     cout << "RANDOM MASSIVE\n";
     FillRand(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShakerSort(A, N);
+    InsertSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << (3 * ((N * N - N) / 2)) / 2 << " C = " << (N * N - N) / 2;
+    cout << "Theoretical: M = " << (N * N - N)/2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
 
     cout << "\n\nINCREASING MASSIVE\n";
     FillInc(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShakerSort(A, N);
+    InsertSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 0 << " C = " << (N * N - N) / 2;
+    cout << "Theoretical: M = " << 2 * (N - 1) << " C = " << N - 1;
 
     cout << "\n\nDECREASING MASSIVE\n";
     FillDec(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShakerSort(A, N);
+    InsertSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 3 * ((N * N - N) / 2) << " C = " << (N * N - N) / 2;
+    cout << "Theoretical: M = " << (N * N - N) / 2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
 
-    //tablica
-    int B[100];
-    cout << "\nN        Dec        Rand       Inc        Dec        Rand       Inc\n";
-    FillDec(B, 100);
-    BubbleSort(B, 100);
-    cout << "100      " << Moves + Compares;
-    FillRand(B, 100);
-    BubbleSort(B, 100);
-    cout << "      " << Moves + Compares;
-    FillInc(B, 100);
-    BubbleSort(B, 100);
-    cout << "      " << Moves + Compares;
-    FillDec(B, 100);
-    ShakerSort(B, 100);
-    cout << "      " << Moves + Compares;
-    FillRand(B, 100);
-    ShakerSort(B, 100);
-    cout << "      " << Moves + Compares;
-    FillInc(B, 100);
-    ShakerSort(B, 100);
-    cout << "      " << Moves + Compares;
+    //new tablica
+    int Tab[25];
+    for (int i = 0; i < 25; i += 5) {
+        Tab[i] = 100 + (20 * i);
+    }
     cout << endl;
-    int C[200];
-    FillDec(C, 200);
-    BubbleSort(C, 200);
-    cout << "200      " << Moves + Compares;
-    FillRand(C, 200);
-    BubbleSort(C, 200);
-    cout << "      " << Moves + Compares;
-    FillInc(C, 200);
-    BubbleSort(C, 200);
-    cout << "      " << Moves + Compares;
-    FillDec(C, 200);
-    ShakerSort(C, 200);
-    cout << "      " << Moves + Compares;
-    FillRand(C, 200);
-    ShakerSort(C, 200);
-    cout << "      " << Moves + Compares;
-    FillInc(C, 200);
-    ShakerSort(C, 200);
-    cout << "      " << Moves + Compares;
-    cout << endl;
-    int D[300];
-    FillDec(D, 300);
-    BubbleSort(D, 300);
-    cout << "300      " << Moves + Compares;
-    FillRand(D, 300);
-    BubbleSort(D, 300);
-    cout << "      " << Moves + Compares;
-    FillInc(D, 300);
-    BubbleSort(D, 300);
-    cout << "      " << Moves + Compares;
-    FillDec(D, 300);
-    ShakerSort(D, 300);
-    cout << "      " << Moves + Compares;
-    FillRand(D, 300);
-    ShakerSort(D, 300);
-    cout << "      " << Moves + Compares;
-    FillInc(D, 300);
-    ShakerSort(D, 300);
-    cout << "      " << Moves + Compares;
-    cout << endl;
-    int E[400];
-    FillDec(E, 400);
-    BubbleSort(E, 400);
-    cout << "400      " << Moves + Compares;
-    FillRand(E, 400);
-    BubbleSort(E, 400);
-    cout << "      " << Moves + Compares;
-    FillInc(E, 400);
-    BubbleSort(E, 400);
-    cout << "      " << Moves + Compares;
-    FillDec(E, 400);
-    ShakerSort(E, 400);
-    cout << "      " << Moves + Compares;
-    FillRand(E, 400);
-    ShakerSort(E, 400);
-    cout << "      " << Moves + Compares;
-    FillInc(E, 400);
-    ShakerSort(E, 400);
-    cout << "      " << Moves + Compares;
-    cout << endl;
-    int F[500];
-    FillDec(F, 500);
-    BubbleSort(F, 500);
-    cout << "500      " << Moves + Compares;
-    FillRand(F, 500);
-    BubbleSort(F, 500);
-    cout << "      " << Moves + Compares;
-    FillInc(F, 500);
-    BubbleSort(F, 500);
-    cout << "      " << Moves + Compares;
-    FillDec(F, 500);
-    ShakerSort(F, 500);
-    cout << "      " << Moves + Compares;
-    FillRand(F, 500);
-    ShakerSort(F, 500);
-    cout << "      " << Moves + Compares;
-    FillInc(F, 500);
-    ShakerSort(F, 500);
-    cout << "      " << Moves + Compares;
+    int t = 0;
+    for (int i = 100; i <= 500; i += 100) {
+        int* P;
+        P = new int[i];
+        if (P == NULL) {
+            printf(" Error pamati ");
+            return 1;
+        }
+        t++;
+        FillRand(P, i);
+        SelectSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        BubbleSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        ShakerSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        InsertSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        P = NULL;
+    }
+    
+    cout << "\n n      Select      Bubble      Shaker      Insert\n";
+    for (int i = 0; i < 25; i++) {
+        if ((i % 5 == 0) && (i != 0)) { 
+            cout << endl; 
+        }
+        cout << Tab[i] << "      ";        
+    }
+    
 }

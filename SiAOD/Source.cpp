@@ -194,3 +194,73 @@ int main() {
     cout << "      " << Moves + Compares;
 }
 */
+
+/*
+cout << "RANDOM MASSIVE\n";
+    FillRand(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    InsertSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << (N * N - N)/2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
+
+    cout << "\n\nINCREASING MASSIVE\n";
+    FillInc(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    InsertSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << 2 * (N - 1) << " C = " << N - 1;
+
+    cout << "\n\nDECREASING MASSIVE\n";
+    FillDec(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    InsertSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << (N * N - N) / 2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
+
+    //new tablica
+    int Tab[25];
+    for (int i = 0; i < 25; i += 5) {
+        Tab[i] = 100 + (20 * i);
+    }
+    cout << endl;
+    int t = 0;
+    for (int i = 100; i <= 500; i += 100) {
+        int* P;
+        P = new int[i];
+        if (P == NULL) {
+            printf(" Error pamati ");
+            return 1;
+        }
+        t++;
+        FillRand(P, i);
+        SelectSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        BubbleSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        ShakerSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        InsertSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+        P = NULL;
+    }
+
+    cout << "\n n      Select      Bubble      Shaker      Insert\n";
+    for (int i = 0; i < 25; i++) {
+        if ((i % 5 == 0) && (i != 0)) {
+            cout << endl;
+        }
+        cout << Tab[i] << "      ";
+    }
+*/

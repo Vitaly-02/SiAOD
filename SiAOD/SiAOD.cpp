@@ -7,6 +7,7 @@ using namespace std;
 const int N = 10;
 int A[N];
 int Moves = 0, Compares = 0;
+int Ksorts = 0;
 
 void FillInc(int A[], int N) {
     for (int i = 0; i < N; i++)
@@ -133,48 +134,123 @@ void InsertSort(int Massive[], int size) {
 
 
 void ShellSort(int Massive[], int size) {
-    int max = 0;
-    max = pow(2, N / 2 + 1) -1 ;
-    for (int k = max; k >= 1; k = (k - 1) / 2) {
-        cout << k << ' ';
+    Moves = 0, Compares = 0;
+    int max = 0, temp = size;
+    while (temp >= 2) {
+        temp /= 2;
+        max++;
     }
+    max-=1;
+    //cout << max << " ";
+    int* Steps;
+    Steps = new int[max];
+    Steps[0] = 1;
+    for (int k = 1; k < max; k++) {
+        Steps[k] = 2 * Steps[k - 1] + 1;
+    //    cout << Steps[k] << ' ';
+    }
+    for (int i = max - 1, t; i >= 0; i--) {
+        int k = Steps[i];
+        for (int j = k ; j < size; j++) {                
+            temp = Massive[j];
+            Moves++;
+            t = j - k;
+            Compares++;
+            while ((t >= 0) && (temp < Massive[t])) {
+                Massive[t + k] = Massive[t];
+                Moves++;
+                t -= k;
+            }
+            Massive[t + k] = temp;
+            Moves++;
+        }
+    
+    }
+    Steps = NULL;
+    Ksorts = max;
 }
 
+void BSearch1(int Massive[], int size, int search) {
+    Compares = 0;
+    int left = 0, right = size - 1, medium = 0;
+    bool end = 0;
+    
+        while (left <= right) {
+            medium = (left + right) / 2;
+            Compares++;
+            if (Massive[medium] == search) {
+                end = 1;
+            }
+            Compares++;
+            if (Massive[medium] < search) {
+                left = medium + 1;
+            }
+            else {
+                right = medium - 1;
+            }
+        }
+              // cout << end << " " << left << " " << endl;
+    
+}
+
+void BSearch2(int Massive[], int size, int search) {
+    Compares = 0;
+    int left = 0, right = size - 1, medium = 0;
+    bool end = 0;
+    
+        while (left < right) {
+            medium = (left + right) / 2;
+            Compares++;
+            if (Massive[medium] < search) {
+                left = medium + 1;
+            }
+            else {
+                right = medium;
+            }
+        }
+        Compares++;
+        if (Massive[right] == search) {
+            end = 1;
+        }
+    
+    //cout << end << " " << left << " " << endl;
+}
+    
 int main() {
     cout << "RANDOM MASSIVE\n";
     FillRand(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    InsertSort(A, N);
+    ShellSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << (N * N - N)/2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
 
     cout << "\n\nINCREASING MASSIVE\n";
     FillInc(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    InsertSort(A, N);
+    ShellSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 2 * (N - 1) << " C = " << N - 1;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
 
     cout << "\n\nDECREASING MASSIVE\n";
     FillDec(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    InsertSort(A, N);
+    ShellSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << (N * N - N) / 2 + 2 * N - 2 << " C = " << (N * N - N) / 2;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
 
     //new tablica
-    int Tab[25];
-    for (int i = 0; i < 25; i += 5) {
-        Tab[i] = 100 + (20 * i);
+    int Tab[20];
+    for (int i = 0; i < 20; i += 4) {
+        Tab[i] = 100 + (100 * (i/4));
     }
     cout << endl;
     int t = 0;
@@ -187,28 +263,58 @@ int main() {
         }
         t++;
         FillRand(P, i);
-        SelectSort(P, i);
-        Tab[t] = Moves + Compares; t++;
-        FillRand(P, i);
-        BubbleSort(P, i);
-        Tab[t] = Moves + Compares; t++;
-        FillRand(P, i);
-        ShakerSort(P, i);
+        ShellSort(P, i);
+        Tab[t] = Ksorts; t++;
+        
         Tab[t] = Moves + Compares; t++;
         FillRand(P, i);
         InsertSort(P, i);
         Tab[t] = Moves + Compares; t++;
+        
         P = NULL;
     }
     
-    cout << "\n n      Select      Bubble      Shaker      Insert\n";
-    for (int i = 0; i < 25; i++) {
-        if ((i % 5 == 0) && (i != 0)) { 
+    cout << "\n n      K-sorts      Shell      Insert\n";
+    for (int i = 0; i < 20; i++) {
+        if ((i % 4 == 0) && (i != 0)) { 
             cout << endl; 
         }
         cout << Tab[i] << "      ";        
     }
-    
+ 
     cout << endl;
     
+    int Tab1[30];
+    for (int i = 0; i < 30; i += 3) {
+        Tab1[i] = 100 + (100 * (i / 3));
+    }
+    cout << endl;
+    int t1 = 0;
+    for (int i = 100; i <= 1000; i += 100) {
+        int* P;
+        P = new int[i];
+        if (P == NULL) {
+            printf(" Error pamati ");
+            return 1;
+        }
+        t1++;
+        FillInc(P, i);
+        BSearch1(P, i, 1);
+        Tab1[t1] = Compares; t1++;
+        BSearch2(P, i, 1);
+        Tab1[t1] = Compares; t1++;
+        P = NULL;
+    }
+
+    cout << "\n n      Bsearch1     Bsearch2\n";
+    for (int i = 0; i < 30; i++) {
+        if ((i % 3 == 0) && (i != 0)) {
+            cout << endl;
+        }
+        cout << Tab1[i] << "         ";
+    }
+
+    cout << endl;
+    FillInc(A, N);
+    BSearch1(A, N, 100);
 }

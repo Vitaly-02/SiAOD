@@ -264,3 +264,108 @@ cout << "RANDOM MASSIVE\n";
         cout << Tab[i] << "      ";
     }
 */
+
+/*
+int main() {
+    cout << "RANDOM MASSIVE\n";
+    FillRand(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    ShellSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+
+    cout << "\n\nINCREASING MASSIVE\n";
+    FillInc(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    ShellSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+
+    cout << "\n\nDECREASING MASSIVE\n";
+    FillDec(A, N);
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    ShellSort(A, N);
+    cout << "\nM = " << Moves << " C = " << Compares << endl;
+    PrintMas();
+    cout << CheckSum() << endl << RunNumber() << endl;
+    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+
+    //new tablica
+    int Tab[20];
+    for (int i = 0; i < 20; i += 4) {
+        Tab[i] = 100 + (100 * (i/4));
+    }
+    cout << endl;
+    int t = 0;
+    for (int i = 100; i <= 500; i += 100) {
+        int* P;
+        P = new int[i];
+        if (P == NULL) {
+            printf(" Error pamati ");
+            return 1;
+        }
+        t++;
+        FillRand(P, i);
+        ShellSort(P, i);
+        Tab[t] = Ksorts; t++;
+
+        Tab[t] = Moves + Compares; t++;
+        FillRand(P, i);
+        InsertSort(P, i);
+        Tab[t] = Moves + Compares; t++;
+
+        P = NULL;
+    }
+
+    cout << "\n n      K-sorts      Shell      Insert\n";
+    for (int i = 0; i < 20; i++) {
+        if ((i % 4 == 0) && (i != 0)) {
+            cout << endl;
+        }
+        cout << Tab[i] << "      ";
+    }
+
+    cout << endl;
+
+    int Tab1[30];
+    for (int i = 0; i < 30; i += 3) {
+        Tab1[i] = 100 + (100 * (i / 3));
+    }
+    cout << endl;
+    int t1 = 0;
+    for (int i = 100; i <= 1000; i += 100) {
+        int* P;
+        P = new int[i];
+        if (P == NULL) {
+            printf(" Error pamati ");
+            return 1;
+        }
+        t1++;
+        FillInc(P, i);
+        BSearch1(P, i, 1);
+        Tab1[t1] = Compares; t1++;
+        BSearch2(P, i, 1);
+        Tab1[t1] = Compares; t1++;
+        P = NULL;
+    }
+
+    cout << "\n n      Bsearch1     Bsearch2\n";
+    for (int i = 0; i < 30; i++) {
+        if ((i % 3 == 0) && (i != 0)) {
+            cout << endl;
+        }
+        cout << Tab1[i] << "         ";
+    }
+
+    cout << endl;
+    FillInc(A, N);
+    BSearch1(A, N, 100);
+}
+*/

@@ -170,6 +170,39 @@ void ShellSort(int Massive[], int size) {
     Ksorts = max;
 }
 
+void Heap(int Massive[], int size, int left) {
+    int max = left;
+    int l = 2 * left + 1;
+    int r = 2 * left + 2;
+    Compares++;
+    if ((l < size) && (Massive[l] > Massive[max])) {
+        max = l;
+    }
+    Compares++;
+    if ((r < size) && (Massive[r] > Massive[max])) {
+        max = r;
+    }
+    if (max != left) {
+        Moves += 3;
+        swap(Massive[left], Massive[max]);
+        Heap(Massive, size, max);
+    }
+    
+}
+
+void HeapSort(int Massive[], int size) {
+    Moves = 0; Compares = 0;
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        Heap(Massive, size, i);
+    }
+    for (int i = size - 1; i >= 0; i--) {
+        Moves += 3;
+        swap(Massive[0], Massive[i]);
+    // вызываем процедуру Heap на уменьшенной куче
+        Heap(Massive, i, 0);
+    }
+}
+
 void BSearch1(int Massive[], int size, int search) {
     Compares = 0;
     int left = 0, right = size - 1, medium = 0;
@@ -221,31 +254,31 @@ int main() {
     FillRand(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShellSort(A, N);
+    HeapSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+    cout << "Theoretical: M = " << 94 << " C = " << 78;
 
     cout << "\n\nINCREASING MASSIVE\n";
     FillInc(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShellSort(A, N);
+    HeapSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+    cout << "Theoretical: M = " << 94 << " C = " << 78;
 
     cout << "\n\nDECREASING MASSIVE\n";
     FillDec(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    ShellSort(A, N);
+    HeapSort(A, N);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << pow(N, 1.2) << " C = " << pow(N, 1.2);
+    cout << "Theoretical: M = " << 94 << " C = " << 78;
 
     //new tablica
     int Tab[20];
@@ -262,19 +295,20 @@ int main() {
             return 1;
         }
         t++;
-        FillRand(P, i);
-        ShellSort(P, i);
-        Tab[t] = Ksorts; t++;
-        
+        FillInc(P, i);
+        HeapSort(P, i);
+        Tab[t] = Moves+Compares; t++;
+        FillDec(P, i);
+        HeapSort(P, i);
         Tab[t] = Moves + Compares; t++;
         FillRand(P, i);
-        InsertSort(P, i);
+        HeapSort(P, i);
         Tab[t] = Moves + Compares; t++;
-        
         P = NULL;
     }
     
-    cout << "\n n      K-sorts      Shell      Insert\n";
+    cout << "      HeapSort M+C" << endl;
+    cout << "\n n      Inc         Dec       Rand\n";
     for (int i = 0; i < 20; i++) {
         if ((i % 4 == 0) && (i != 0)) { 
             cout << endl; 
@@ -283,38 +317,4 @@ int main() {
     }
  
     cout << endl;
-    
-    int Tab1[30];
-    for (int i = 0; i < 30; i += 3) {
-        Tab1[i] = 100 + (100 * (i / 3));
-    }
-    cout << endl;
-    int t1 = 0;
-    for (int i = 100; i <= 1000; i += 100) {
-        int* P;
-        P = new int[i];
-        if (P == NULL) {
-            printf(" Error pamati ");
-            return 1;
-        }
-        t1++;
-        FillInc(P, i);
-        BSearch1(P, i, 1);
-        Tab1[t1] = Compares; t1++;
-        BSearch2(P, i, 1);
-        Tab1[t1] = Compares; t1++;
-        P = NULL;
-    }
-
-    cout << "\n n      Bsearch1     Bsearch2\n";
-    for (int i = 0; i < 30; i++) {
-        if ((i % 3 == 0) && (i != 0)) {
-            cout << endl;
-        }
-        cout << Tab1[i] << "         ";
-    }
-
-    cout << endl;
-    FillInc(A, N);
-    BSearch1(A, N, 100);
 }

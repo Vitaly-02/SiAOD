@@ -369,3 +369,37 @@ int main() {
     BSearch1(A, N, 100);
 }
 */
+/*
+void Heap(int Massive[], int size, int left) {
+    int max = left;
+    int l = 2 * left + 1;
+    int r = 2 * left + 2;
+    Compares++;
+    if ((l < size) && (Massive[l] > Massive[max])) {
+        max = l;
+    }
+    Compares++;
+    if ((r < size) && (Massive[r] > Massive[max])) {
+        max = r;
+    }
+    if (max != left) {
+        Moves += 3;
+        swap(Massive[left], Massive[max]);
+        Heap(Massive, size, max);
+    }
+
+}
+
+void HeapSort(int Massive[], int size) {
+    Moves = 0; Compares = 0;
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        Heap(Massive, size, i);
+    }
+    for (int i = size - 1; i >= 0; i--) {
+        Moves += 3;
+        swap(Massive[0], Massive[i]);
+    // вызываем процедуру Heap на уменьшенной куче
+        Heap(Massive, i, 0);
+    }
+}
+*/

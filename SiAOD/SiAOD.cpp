@@ -171,35 +171,44 @@ void ShellSort(int Massive[], int size) {
 }
 
 void Heap(int Massive[], int size, int left) {
-    int max = left;
-    int l = 2 * left + 1;
-    int r = 2 * left + 2;
-    Compares++;
-    if ((l < size) && (Massive[l] > Massive[max])) {
-        max = l;
+    int l = left;
+    Moves++;
+    int x = Massive[l];
+    int j;
+    while (1) {
+        j = 2 * l;
+        if (j > size) {
+            break;
+        }
+        Compares++;
+        if ((j < size) && (Massive[j + 1] <= Massive[j])) {
+            j = j + 1;
+        }
+        Compares++;
+        if (x <= Massive[j]) {
+            break;
+        }
+        Moves++;
+        Massive[l] = Massive[j];
+        l = j;
     }
-    Compares++;
-    if ((r < size) && (Massive[r] > Massive[max])) {
-        max = r;
-    }
-    if (max != left) {
-        Moves += 3;
-        swap(Massive[left], Massive[max]);
-        Heap(Massive, size, max);
-    }
-    
+    Moves++;
+    Massive[l] = x;
 }
 
 void HeapSort(int Massive[], int size) {
     Moves = 0; Compares = 0;
-    for (int i = size / 2 - 1; i >= 0; i--) {
-        Heap(Massive, size, i);
+    int L = size / 2;
+    while (L >= 0) {
+        Heap(Massive, size, L);
+        L = L - 1;
     }
-    for (int i = size - 1; i >= 0; i--) {
-        Moves += 3;
-        swap(Massive[0], Massive[i]);
-    // вызываем процедуру Heap на уменьшенной куче
-        Heap(Massive, i, 0);
+    int R = size - 1;
+    while (R >= 1) {
+        Moves+=3;
+        swap(Massive[0], Massive[R]);
+        R = R - 1;
+        Heap(Massive, R, 0);
     }
 }
 

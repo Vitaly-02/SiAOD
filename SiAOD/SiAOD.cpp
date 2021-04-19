@@ -213,12 +213,11 @@ void HeapSort(int Massive[], int size) {
 }
     
 void QuickSort(int Massive[], int size, int left) {
-     // PrintMas(); cout << "R=" << size - 1 << " L=" << left << endl;
     Moves++;
-    int temp = Massive[left + 1]; //[left+1] //(left + size)/2
+    int temp = Massive[left]; //[left] //(left + size)/2
     int i, j;
     i = left;
-    j = size-1;
+    j = size;
     while (i <= j) {
         Compares++;
         while (Massive[i] < temp) {
@@ -243,7 +242,6 @@ void QuickSort(int Massive[], int size, int left) {
     if (i < size-1 ) {
         QuickSort(Massive, size, i);
     }
-    
 }
 
 
@@ -299,7 +297,7 @@ int main() {
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
     Moves = 0; Compares = 0;
-    QuickSort(A, N, 0);
+    QuickSort(A, N-1, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
@@ -310,7 +308,7 @@ int main() {
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
     Moves = 0; Compares = 0;
-    QuickSort(A, N, 0);
+    QuickSort(A, N-1, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
@@ -321,7 +319,7 @@ int main() {
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
     Moves = 0; Compares = 0;
-    QuickSort(A, N, 0);
+    QuickSort(A, N-1, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
@@ -343,13 +341,13 @@ int main() {
         }
         t++;
         FillInc(P, i); Moves = 0; Compares = 0;
-        QuickSort(P, i, 0);
+        QuickSort(P, i-1, 0);
         Tab[t] = Moves+Compares; t++;
         FillDec(P, i); Moves = 0; Compares = 0;
-        QuickSort(P, i, 0);
+        QuickSort(P, i-1, 0);
         Tab[t] = Moves + Compares; t++;
         FillRand(P, i); Moves = 0; Compares = 0;
-        QuickSort(P, i, 0);
+        QuickSort(P, i-1, 0);
         Tab[t] = Moves + Compares; t++;
         P = NULL;
     }

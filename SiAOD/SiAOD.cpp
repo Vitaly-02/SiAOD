@@ -211,6 +211,41 @@ void HeapSort(int Massive[], int size) {
         Heap(Massive, R, 0);
     }
 }
+    
+void QuickSort(int Massive[], int size, int left) {
+     // PrintMas(); cout << "R=" << size - 1 << " L=" << left << endl;
+    Moves++;
+    int temp = Massive[left + 1]; //[left+1] //(left + size)/2
+    int i, j;
+    i = left;
+    j = size-1;
+    while (i <= j) {
+        Compares++;
+        while (Massive[i] < temp) {
+            Compares++;
+            i++;
+        }
+        Compares++;
+        while (Massive[j] > temp) {
+            Compares++;
+            j--;
+        }
+        if (i <= j) {
+            Moves += 3;
+            swap(Massive[i], Massive[j]);
+            i++;
+            j--;
+        }
+    }
+    if (left < j) {
+        QuickSort(Massive, j, left);
+    }
+    if (i < size-1 ) {
+        QuickSort(Massive, size, i);
+    }
+    
+}
+
 
 void BSearch1(int Massive[], int size, int search) {
     Compares = 0;
@@ -263,31 +298,34 @@ int main() {
     FillRand(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    HeapSort(A, N);
+    Moves = 0; Compares = 0;
+    QuickSort(A, N, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 94 << " C = " << 78;
+    cout << "Theoretical: M = " << 3*N - 1 << " C = " << (N * N + 5 * N + 4) / 2;
 
     cout << "\n\nINCREASING MASSIVE\n";
     FillInc(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    HeapSort(A, N);
+    Moves = 0; Compares = 0;
+    QuickSort(A, N, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 94 << " C = " << 78;
+    cout << "Theoretical: M = " << 3 * N - 1 << " C = " << (N * N + 5 * N + 4) / 2;
 
     cout << "\n\nDECREASING MASSIVE\n";
     FillDec(A, N);
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    HeapSort(A, N);
+    Moves = 0; Compares = 0;
+    QuickSort(A, N, 0);
     cout << "\nM = " << Moves << " C = " << Compares << endl;
     PrintMas();
     cout << CheckSum() << endl << RunNumber() << endl;
-    cout << "Theoretical: M = " << 94 << " C = " << 78;
+    cout << "Theoretical: M = " << 3 * N  << " C = " << (N*N + 5*N + 4) /2;
 
     //new tablica
     int Tab[20];
@@ -304,19 +342,19 @@ int main() {
             return 1;
         }
         t++;
-        FillInc(P, i);
-        HeapSort(P, i);
+        FillInc(P, i); Moves = 0; Compares = 0;
+        QuickSort(P, i, 0);
         Tab[t] = Moves+Compares; t++;
-        FillDec(P, i);
-        HeapSort(P, i);
+        FillDec(P, i); Moves = 0; Compares = 0;
+        QuickSort(P, i, 0);
         Tab[t] = Moves + Compares; t++;
-        FillRand(P, i);
-        HeapSort(P, i);
+        FillRand(P, i); Moves = 0; Compares = 0;
+        QuickSort(P, i, 0);
         Tab[t] = Moves + Compares; t++;
         P = NULL;
     }
     
-    cout << "      HeapSort M+C" << endl;
+    cout << "      QuickSort M+C" << endl;
     cout << "\n n      Inc         Dec       Rand\n";
     for (int i = 0; i < 20; i++) {
         if ((i % 4 == 0) && (i != 0)) { 

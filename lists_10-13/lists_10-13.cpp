@@ -3,6 +3,9 @@
 #include <cstdlib>
 using namespace std;
 
+int Moves = 0;
+int Compares = 0;
+
 struct node {
 	node* next;
 	int data;
@@ -200,60 +203,159 @@ int get_size(node* head) {
 	return size;
 }
 
-queue Split(node* head) {
-	queue a, b;
+void Split(node* head, queue& a, queue& b) {
 	node* h = head;
 	while (h) {
 		a.pushback(h->data);
-		h = h->next;
-		b.pushback(h->data);
-		h = h->next;
+		if (h->next) {
+			h = h->next;
+			b.pushback(h->data);
+			
+		}
+		else {
+			break;
+		}
+		if (h->next) {
+			h = h->next;
+		}
+		else {
+			break;
+		}
 	}
-	return a, b;
 }
 
-void Merge(queue a, queue b, queue c) {
+void Merge(queue a, queue b, queue& c) {
+	Moves = Compares = 0;
 	node* a_node = a.head;
 	node* b_node = b.head;
 	node* c_node = c.head;
 	int a_size = get_size(a.head);
 	int b_size = get_size(b.head);
-	while (a_size != 0 && b_size != 0) {
+	while ((a_size != 0) && (b_size != 0)) {
+		Compares++;
 		if (a_node->data <= b_node->data) {
-			c_node = a_node;
+			//c_node = a_node;
+			Moves++;
+			c.pushback(a_node->data);
 			a_size--; 
 			a_node = a_node->next;
-			c_node = c_node->next;
+			//c_node = c_node->next;
 		}
 		else {
-			c_node = b_node;
+			//c_node = b_node;
+			Moves++;
+			c.pushback(b_node->data);
 			b_size--;
 			b_node = b_node->next;
-			c_node = c_node->next;
+			//c_node = c_node->next;
 		}
 	}
 
 	while (a_size > 0) {
-		c_node = a_node;
+		//c_node = a_node;
+		Moves++;
+		c.pushback(a_node->data);
 		a_size--;
 		a_node = a_node->next;
-		c_node = c_node->next;
+	//	c_node = c_node->next;
 	}
 	while (b_size > 0) {
-		c_node = b_node;
+	//	c_node = b_node;
+		Moves++;
+		c.pushback(b_node->data);
 		b_size--;
 		b_node = b_node->next;
-		c_node = c_node->next;
+	//	c_node = c_node->next;
 	}
 }
 
-void MergeSort(queue S) {
-	
+void MergeSort(queue& S) {
+	queue a; queue b;
+	queue c0; queue c1;
+	Split(S.head, a, b);
+	int p = 1;
+	int n = get_size(S.head);
+	while (p < n) {
+		//
+		
+		//
+
+		int i = 0;
+		int m = n;
+		int q, r;
+		while (m > 0) {
+			if (m >= p) {	////
+				q = p;
+			}
+			else {
+				q = m;
+			}
+			m -= q;
+			if (m >= p) {
+				r = p;
+			}
+			else {
+				r = m;
+			}
+			m -= r;			////
+			if (i == 0) {
+				Merge(a, b, c0);
+			}
+			else {
+				Merge(a, b, c1);
+			}
+			i = 1 - i;
+		}
+		a = c0; b = c1; 
+		p = 2 * p;
+	}
+	c0.tail->next = nullptr; 
+	S.head = c0.head;
 }
 
 
 int main() {
+	queue t;
+	t.fill_dec(10);
+	t.print();
+	cout << "Runnumber = " << t.run_number(10) << endl;
+	cout << "Sum = " << t.check_sum() << endl;
+	
+	queue y;
+	y.fill_dec(10);
+	y.print();
+	cout << "Runnumber = " << y.run_number(10) << endl;
+	cout << "Sum = " << y.check_sum() << endl;
 
+	queue c;
+	Merge(t, y, c);
+	cout << "After merge: \n";
+	c.print();
+	cout << "Runnumber = " << c.run_number(20) << endl;
+	cout << "Sum = " << c.check_sum() << endl;
+	cout << "Moves = " << Moves << " Compares = " << Compares << endl;
+
+	t.pop_all();
+	y.pop_all();
+	c.pop_all();
+
+	t.fill_inc(10);
+	t.print();
+	cout << "Runnumber = " << t.run_number(10) << endl;
+	cout << "Sum = " << t.check_sum() << endl;
+
+	y.fill_inc(10);
+	y.print();
+	cout << "Runnumber = " << y.run_number(10) << endl;
+	cout << "Sum = " << y.check_sum() << endl;
+
+	Merge(t, y, c);
+	cout << "After merge: \n";
+	c.print();
+	cout << "Runnumber = " << c.run_number(20) << endl;
+	cout << "Sum = " << c.check_sum() << endl;
+	cout << "Moves = " << Moves << " Compares = " << Compares << endl;
+/*
 	stack t;
 	t.fill_dec(10);
 	cout << get_size(t.head) << endl;
@@ -266,7 +368,13 @@ int main() {
 	cout << get_size(t.head) << endl;
 	t.print();
 	//MergeSort(t.head);
-			
+
+//	queue a; queue b; t.fill_dec(10);  Split(t.head, a, b);
+//	cout << "a " << endl; a.print(); cout << "b " << endl; b.print();
+//	queue c; Merge(a, b, c); cout << "c " << endl; c.print();
+//	cout << c.is_empty();
+//	queue q; q.fill_dec(10); q.print(); MergeSort(q); cout << "after sort\n"; q.print();
+//	cout << get_size(q.head) << endl;
 	
 	queue r;
 	r.fill_dec(10);
@@ -278,5 +386,6 @@ int main() {
 	r.pushback(12);
 	r.pop_top();
 	r.print();
+	*/
 	return 0;
 }

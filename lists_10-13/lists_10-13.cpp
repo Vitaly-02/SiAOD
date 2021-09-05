@@ -197,7 +197,7 @@ int get_size(node* head) {
 	int size = 0;
 	node* q = head;
 	while (q) {
-		size++;
+		size++;	
 		q = q->next;
 	}
 	return size;
@@ -233,20 +233,22 @@ void Merge(queue a, queue b, queue& c) {
 	int b_size = get_size(b.head);
 	while ((a_size != 0) && (b_size != 0)) {
 		Compares++;
-		if (a_node->data <= b_node->data) {
+		if (a_node->data < b_node->data) {
 			//c_node = a_node;
 			Moves++;
 			c.pushback(a_node->data);
-			a_size--; 
-			a_node = a_node->next;
+			a_size--;
+			
+			a_node = a_node->next; a.pop_top();
 			//c_node = c_node->next;
 		}
-		else {
+		else if (a_node->data >= b_node->data) {
 			//c_node = b_node;
 			Moves++;
 			c.pushback(b_node->data);
 			b_size--;
-			b_node = b_node->next;
+			
+			b_node = b_node->next; b.pop_top();
 			//c_node = c_node->next;
 		}
 	}
@@ -272,55 +274,50 @@ void Merge(queue a, queue b, queue& c) {
 void MergeSort(queue& S) {
 	queue a; queue b;
 	queue c0; queue c1;
-	Split(S.head, a, b);
+	//Split(S.head, a, b);
 	int p = 1;
 	int n = get_size(S.head);
-	while (p < n) {
-		//
-		
-		//
+	
+	Split(S.head, a, b);
+	S.print();
+	a.print();
+	b.print();
+	S.pop_all();
+	S.print();
+	Merge(a, b, S);
+	S.print();
+	a.print();
+	b.print();
 
-		int i = 0;
-		int m = n;
-		int q, r;
-		while (m > 0) {
-			if (m >= p) {	////
-				q = p;
-			}
-			else {
-				q = m;
-			}
-			m -= q;
-			if (m >= p) {
-				r = p;
-			}
-			else {
-				r = m;
-			}
-			m -= r;			////
-			if (i == 0) {
-				Merge(a, b, c0);
-			}
-			else {
-				Merge(a, b, c1);
-			}
-			i = 1 - i;
-		}
-		a = c0; b = c1; 
-		p = 2 * p;
-	}
-	c0.tail->next = nullptr; 
-	S.head = c0.head;
 }
 
+void DigitalSort(queue& S) {
+	//int L = get_size(S.head);
+	int L = 1;
+	node* p;
+	queue Q[255];
+	for (int j = L; L > 1; L--) {
+		for (int i = 0; i < 255; i++) {
+			Q[i].tail = Q[i].head;
+		}
+	}
+	p = S.head;
+	do {
+		
+	} while (p != nullptr);
+
+}
 
 int main() {
+	/*
 	queue t;
 	t.fill_dec(10);
 	t.print();
 	cout << "Runnumber = " << t.run_number(10) << endl;
 	cout << "Sum = " << t.check_sum() << endl;
 	
+	
+
 	queue y;
 	y.fill_dec(10);
 	y.print();
@@ -355,37 +352,61 @@ int main() {
 	cout << "Runnumber = " << c.run_number(20) << endl;
 	cout << "Sum = " << c.check_sum() << endl;
 	cout << "Moves = " << Moves << " Compares = " << Compares << endl;
-/*
-	stack t;
-	t.fill_dec(10);
-	cout << get_size(t.head) << endl;
-	cout << t.check_sum() << endl;
-	t.print();
-	t.pop_all();
-	cout << t.check_sum() << endl;
-	t.print();
-	t.pushtop(12);
-	cout << get_size(t.head) << endl;
-	t.print();
-	//MergeSort(t.head);
-
-//	queue a; queue b; t.fill_dec(10);  Split(t.head, a, b);
-//	cout << "a " << endl; a.print(); cout << "b " << endl; b.print();
-//	queue c; Merge(a, b, c); cout << "c " << endl; c.print();
-//	cout << c.is_empty();
-//	queue q; q.fill_dec(10); q.print(); MergeSort(q); cout << "after sort\n"; q.print();
-//	cout << get_size(q.head) << endl;
-	
-	queue r;
-	r.fill_dec(10);
-	cout << r.check_sum() << endl;
-	r.print();
-	r.pop_all();
-	cout << r.check_sum() << endl;
-	r.print();
-	r.pushback(12);
-	r.pop_top();
-	r.print();
 	*/
+	
+	queue a;
+	a.fill_dec(10);
+	a.print();
+	MergeSort(a);
+	a.print();
+
+	
 	return 0;
 }
+
+//
+/*
+void MergeSort(queue& S) {
+	queue a; queue b;
+	queue c0; queue c1;
+	Split(S.head, a, b);
+	int p = 1;
+	int n = get_size(S.head);
+	while (p < n) {
+		//
+
+		//
+
+		int i = 0;
+		int m = n;
+		int q, r;
+		while (m > 0) {
+			if (m >= p) {	////
+				q = p;
+			}
+			else {
+				q = m;
+			}
+			m -= q;
+			if (m >= p) {
+				r = p;
+			}
+			else {
+				r = m;
+			}
+			m -= r;			////
+			if (i == 0) {
+				Merge(a, b, c0);
+			}
+			else {
+				Merge(a, b, c1);
+			}
+			i = 1 - i;
+		}
+		a = c0; b = c1;
+		p = 2 * p;
+	}
+	c0.tail->next = nullptr;
+	S.head = c0.head;
+}
+*/

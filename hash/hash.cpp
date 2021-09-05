@@ -21,6 +21,18 @@ struct stack {
 		return (head == nullptr);
 	}
 
+	bool is_there(int key) {
+		node* q = head;
+		bool is = 0;
+		while (q) {
+			if (q->data == key) {
+				is = 1;
+			}
+			q = q->next;
+		}
+		return is;
+	}
+
 	void print() {
 		node* q = head;
 		while (q) {
@@ -111,7 +123,7 @@ int getHashStr(const char str[]) {
 
 int getHashInt(int data) {
 	int hash = 0;
-	hash = (data * rand()) % tableSize;
+	hash = (data * 17) % tableSize;
 	return hash;
 }
 
@@ -123,17 +135,27 @@ void hashIntMassive(stack table[], int data[]) {
 	cout << "\nhashing completed\n";
 }
 
+void findKey(stack table[], int key) {
+	int hash = getHashInt(key);
+	if(table[hash].is_there(key)) {
+		cout << "\nKey element = " << key << " must be there:\n";
+		cout << hash << ": ";
+		table[hash].print();
+	}
+	else {
+		cout << "\nKey element = " << key << " dont exist\n";
+	}
+}
 
 int main() {
 	srand(time(NULL));
-	//cout << hashInt(11);
 	// методом прямого связывания 
 	stack table[tableSize];
 	for (int i = 0; i < tableSize; i++) {
 		table[i].pop_all();
 	}
 
-	int dataq[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+	int dataq[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 	
 	hashIntMassive(table, dataq);
 	
@@ -142,5 +164,8 @@ int main() {
 		table[i].print();
 		cout << "\n";
 	}
+	//
+	findKey(table, 5);
+
 	return 0;
 }

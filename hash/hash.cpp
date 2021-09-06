@@ -148,8 +148,8 @@ void findKey(stack table[], int key) {
 }
 
 // методом открытой адресации
-void hashIntMassive12(int table[], int data[], bool type) {
-	for (int i = 0; i < tableSize; i++) {
+void hashIntMassive12(int table[], int data[], int sizeOfData,  bool type) {
+	for (int i = 0; i < sizeOfData && i < tableSize; i++) {
 		int hash = getHashInt(data[i]);
 		if (table[hash] != -1) {
 			switch (type) {
@@ -196,7 +196,7 @@ int main() {
 		table[i].pop_all();
 	}
 
-	int dataq[] = { 1, 2, 3, 4, 5, 61, 7, 8, 9, 10, 11, 12, 13};
+	int dataq[] = { 1, 2, 3, 4, 5, 61, 7, 8, 9, 10};
 	
 	hashIntMassive(table, dataq);
 	
@@ -214,7 +214,7 @@ int main() {
 	for (int i = 0; i < tableSize; i++) {
 		table12[i] = -1;
 	}
-	hashIntMassive12(table12, dataq, 0);
+	hashIntMassive12(table12, dataq, size(dataq), 0);
 
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": " << table12[i] << "\n";
@@ -225,12 +225,11 @@ int main() {
 		table12[i] = -1;
 	}
 	table12[2] = 111111;
-	hashIntMassive12(table12, dataq, 1);
+	hashIntMassive12(table12, dataq, size(dataq), 1);
 
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": " << table12[i] << "\n";
 	}
-
-
+	
 	return 0;
 }

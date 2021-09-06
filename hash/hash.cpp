@@ -147,6 +147,47 @@ void findKey(stack table[], int key) {
 	}
 }
 
+// методом открытой адресации
+void hashIntMassive12(int table[], int data[], bool type) {
+	for (int i = 0; i < tableSize; i++) {
+		int hash = getHashInt(data[i]);
+		if (table[hash] != -1) {
+			switch (type) {
+				// линейные пробы
+				case 0: {
+					while (table[hash] != -1) {
+						hash = (hash + 1) % tableSize;
+					}
+					break;
+				}
+				// квадратичные пробы
+				case 1: {
+					int d = 1;
+					while (table[hash] != -1) {
+						hash += d;
+						d += 2;
+						if (hash > tableSize) {
+							hash -= tableSize;
+						}
+						if (d >= tableSize) {
+							cout << "\ntable is full\n";
+							return;
+							break;
+						}
+					}
+					break;
+				}
+				default: {
+					cout << "\nhashing failed: choose type\n";
+					break;
+				}
+			}
+		}
+		table[hash] = data[i];
+	}
+	cout << "\nhashing completed\n";
+}
+
 int main() {
 	srand(time(NULL));
 	// методом прямого связывания 
@@ -155,7 +196,7 @@ int main() {
 		table[i].pop_all();
 	}
 
-	int dataq[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+	int dataq[] = { 1, 2, 3, 4, 5, 61, 7, 8, 9, 10, 11, 12, 13};
 	
 	hashIntMassive(table, dataq);
 	
@@ -165,7 +206,31 @@ int main() {
 		cout << "\n";
 	}
 	//
-	findKey(table, 5);
+	findKey(table, 61);
+	//
+	// методом открытой адресации
+	// линейные
+	int table12[tableSize];
+	for (int i = 0; i < tableSize; i++) {
+		table12[i] = -1;
+	}
+	hashIntMassive12(table12, dataq, 0);
+
+	for (int i = 0; i < tableSize; i++) {
+		cout << i << ": " << table12[i] << "\n";
+	}
+	// квадратичные
+	
+	for (int i = 0; i < tableSize; i++) {
+		table12[i] = -1;
+	}
+	table12[2] = 111111;
+	hashIntMassive12(table12, dataq, 1);
+
+	for (int i = 0; i < tableSize; i++) {
+		cout << i << ": " << table12[i] << "\n";
+	}
+
 
 	return 0;
 }

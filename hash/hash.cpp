@@ -3,7 +3,14 @@
 
 using namespace std;
 
-#define tableSize 13
+const int tableSize = 13;
+
+void FillRand(int A[], int N) {
+	srand(time(NULL));
+	for (int i = 0; i < N; i++)
+		A[i] = rand() % 10 + 1;
+};
+
 struct node {
 	node* next;
 	int data;
@@ -230,6 +237,27 @@ int main() {
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": " << table12[i] << "\n";
 	}
-	
+	//tableSize = 100;
+
+	int* hashTables[4];
+	for (int i = 100; i <= 500; i += 100) {
+		
+	}
+
+
+	int tablica[4][4];
+	for (int i = 100; i <= 500; i += 100) {
+		hashTables[i / 100 - 1] = new int[i];
+		for (int j = 0; j < i; j++) {
+			hashTables[i / 100 - 1][j] = -1;
+		}
+		
+		int* P;
+		P = new int[i];
+		FillRand(P, i);
+
+		hashIntMassive12(hashTables[i / 100 - 1], P, i, 0);
+	}
+
 	return 0;
 }

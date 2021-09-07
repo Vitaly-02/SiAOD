@@ -1,9 +1,10 @@
 ﻿#include <iostream>
 #include <time.h>
+#include <cstring>
 
 using namespace std;
 
-const int tableSize = 13;
+int collision = 0;
 
 void FillRand(int A[], int N) {
 	srand(time(NULL));
@@ -104,7 +105,7 @@ struct stack {
 	void pop_top() {
 		node* q = head;
 		head = q->next;
-		q->data = NULL;
+		q->data = 0;
 		q->next = nullptr;
 		delete q;
 	}
@@ -119,7 +120,7 @@ struct stack {
 
 };
 
-int getHashStr(const char str[]) {
+int getHashStr(const char str[], int tableSize) {
 	int hash = 0;
 	int len = strlen(str);
 	for (int i = 0; i < len; i++) {
@@ -128,22 +129,21 @@ int getHashStr(const char str[]) {
 	return hash;
 }
 
-int getHashInt(int data) {
+int getHashInt(int data, int tableSize) {
 	int hash = 0;
 	hash = (data * 17) % tableSize;
 	return hash;
 }
 
 // методом прямого связывания 
-void hashIntMassive(stack table[], int data[]) {
+void hashIntMassive(stack table[], int data[], int tableSize) {
 	for (int i = 0; i < tableSize; i++) {
-		table[getHashInt(data[i])].pushtop(data[i]);
+		table[getHashInt(data[i], tableSize)].pushtop(data[i]);
 	}
-	cout << "\nhashing completed\n";
 }
 
-void findKey(stack table[], int key) {
-	int hash = getHashInt(key);
+void findKey(stack table[], int key, int tableSize) {
+	int hash = getHashInt(key, tableSize);
 	if(table[hash].is_there(key)) {
 		cout << "\nKey element = " << key << " must be there:\n";
 		cout << hash << ": ";
@@ -155,14 +155,16 @@ void findKey(stack table[], int key) {
 }
 
 // методом открытой адресации
-void hashIntMassive12(int table[], int data[], int sizeOfData,  bool type) {
+void hashIntMassive12(int table[], int data[], int sizeOfData,  bool type, int tableSize) {
+	collision = 0;
 	for (int i = 0; i < sizeOfData && i < tableSize; i++) {
-		int hash = getHashInt(data[i]);
+		int hash = getHashInt(data[i], tableSize);
 		if (table[hash] != -1) {
 			switch (type) {
 				// линейные пробы
 				case 0: {
 					while (table[hash] != -1) {
+						collision++;
 						hash = (hash + 1) % tableSize;
 					}
 					break;
@@ -171,13 +173,14 @@ void hashIntMassive12(int table[], int data[], int sizeOfData,  bool type) {
 				case 1: {
 					int d = 1;
 					while (table[hash] != -1) {
+						collision++;
 						hash += d;
 						d += 2;
 						if (hash > tableSize) {
 							hash -= tableSize;
 						}
 						if (d >= tableSize) {
-							cout << "\ntable is full\n";
+							// таблица заполнена
 							return;
 							break;
 						}
@@ -192,12 +195,12 @@ void hashIntMassive12(int table[], int data[], int sizeOfData,  bool type) {
 		}
 		table[hash] = data[i];
 	}
-	cout << "\nhashing completed\n";
 }
 
 int main() {
 	srand(time(NULL));
 	// методом прямого связывания 
+	const int tableSize = 13;
 	stack table[tableSize];
 	for (int i = 0; i < tableSize; i++) {
 		table[i].pop_all();
@@ -205,7 +208,7 @@ int main() {
 
 	int dataq[] = { 1, 2, 3, 4, 5, 61, 7, 8, 9, 10};
 	
-	hashIntMassive(table, dataq);
+	hashIntMassive(table, dataq, tableSize);
 	
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": ";
@@ -213,40 +216,38 @@ int main() {
 		cout << "\n";
 	}
 	//
-	findKey(table, 61);
+	findKey(table, 61, tableSize);
 	//
 	// методом открытой адресации
 	// линейные
+	cout << "\nМетод открытой адресации линейные пробы\n";
 	int table12[tableSize];
 	for (int i = 0; i < tableSize; i++) {
 		table12[i] = -1;
 	}
-	hashIntMassive12(table12, dataq, size(dataq), 0);
+	hashIntMassive12(table12, dataq, size(dataq), 0, tableSize);
 
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": " << table12[i] << "\n";
 	}
 	// квадратичные
-	
+	cout << "\nМетод открытой адресации квадратичные пробы\n";
 	for (int i = 0; i < tableSize; i++) {
 		table12[i] = -1;
 	}
 	table12[2] = 111111;
-	hashIntMassive12(table12, dataq, size(dataq), 1);
+	hashIntMassive12(table12, dataq, size(dataq), 1, tableSize);
 
 	for (int i = 0; i < tableSize; i++) {
 		cout << i << ": " << table12[i] << "\n";
 	}
-	//tableSize = 100;
 
-	int* hashTables[4];
+	int* hashTables[5]; 
+	int tablica[5][4];
+
 	for (int i = 100; i <= 500; i += 100) {
-		
-	}
-
-
-	int tablica[4][4];
-	for (int i = 100; i <= 500; i += 100) {
+		tablica[i / 100 - 1][0] = i;
+		tablica[i / 100 - 1][1] = i;
 		hashTables[i / 100 - 1] = new int[i];
 		for (int j = 0; j < i; j++) {
 			hashTables[i / 100 - 1][j] = -1;
@@ -255,8 +256,20 @@ int main() {
 		int* P;
 		P = new int[i];
 		FillRand(P, i);
+		// linear
+		hashIntMassive12(hashTables[i / 100 - 1], P, i, 0, i);
+		tablica[i / 100 - 1][2] = collision;
+		// quadratic
+		hashIntMassive12(hashTables[i / 100 - 1], P, i, 1, i);
+		tablica[i / 100 - 1][3] = collision;
+	}
 
-		hashIntMassive12(hashTables[i / 100 - 1], P, i, 0);
+	cout << "\nHashTable size \t Amount of sym \t Amount of coll: Linear \t Quadratic \n";
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 4; j++) {
+			cout << tablica[i][j] << "\t\t\t";
+		}
+		cout << "\n";
 	}
 
 	return 0;

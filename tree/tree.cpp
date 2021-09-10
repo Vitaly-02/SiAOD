@@ -15,7 +15,7 @@ public:
         Data = D;
     }
     void printData() {
-        cout << "Lvl: " << Index << "-" << Data << " ||";
+        cout /*<< "Lvl: " << Index  << "-"*/ << Data << " ||";
     }
     void setLeft(Vertex* ptr) {
         Left = ptr;
@@ -51,8 +51,8 @@ public:
             LeftToRight(ptr->Left);
             
             ptr->Data = i;
-            i++;               //
-            ptr->printData(); //
+            i++;               // zapolnenie
+            ptr->printData();  // po poruadku
             
             LeftToRight(ptr->Right);
         }
@@ -71,6 +71,50 @@ public:
             ptr->printData();
         }
     }
+
+    int Size(Vertex* ptr) {
+        int size = 0;
+        if (ptr == nullptr) {
+            return size;
+        }
+        else {
+            size = 1 + Size(ptr->Left) + Size(ptr->Right);
+        }
+        return size;
+    }
+    int Sum(Vertex* ptr) {
+        int sum = 0;
+        if (ptr == nullptr) {
+            return sum;
+        }
+        else {
+            sum = ptr->Data + Sum(ptr->Left) + Sum(ptr->Right);
+        }
+        return sum;
+    }
+    int Height(Vertex* ptr) {
+        int height = 0;
+        if (ptr == nullptr) {
+            return height;
+        }
+        else {
+            height = 1 + max(Height(ptr->Left), Height(ptr->Right));
+        }
+        return height;
+    }
+    int Path(Vertex* ptr) {
+        int path = 0;
+        if(ptr == nullptr) {
+            return path;
+        }
+        else {
+            path = 1 + ptr->Index + Path(ptr->Left) + Path(ptr->Right);
+        }
+        return path;
+    }
+    double midHeight(Vertex* ptr) {
+        return (double)Path(ptr) / (double)Size(ptr);
+    }
 };
 
 int main() {
@@ -81,5 +125,9 @@ int main() {
     Root->UpToDown(Root);
     cout << endl;
     Root->DownToUp(Root);
+    cout << endl << "Size = " << Root->Size(Root);
+    cout << endl << "Sum = " << Root->Sum(Root);
+    cout << endl << "Height = " << Root->Height(Root);
+    cout << endl << "Mid Height = " << Root->midHeight(Root);
     return 0;
 }

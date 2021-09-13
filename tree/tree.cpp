@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <time.h>
-
+// variant dereva 5
 using namespace std;
 
 class Vertex {
@@ -33,16 +33,16 @@ public:
         Right = right;
         Right->Index = Index + 1;
     }
-    void makeTree1(Vertex* Root) {
+    void makeTree5(Vertex* Root) {
         //Vertex* ptr = Root;
         Root->initLeft(); 
         Root->initRight();
         Vertex* ptr = Root;
         ptr = ptr->Right;
-        ptr->initLeft(); 
-        ptr->initRight(); 
-        ptr = ptr->Right;
+        ptr->initRight();
+        ptr = Root->Left;
         ptr->initLeft();
+        ptr->initRight();
     }
     int i = 0;
     void LeftToRight(Vertex* ptr) {
@@ -119,12 +119,12 @@ public:
 
 int main() {
     Vertex* Root = new Vertex;
-    Root->makeTree1(Root);
+    Root->makeTree5(Root);
     Root->LeftToRight(Root);
-    cout << endl;
-    Root->UpToDown(Root);
-    cout << endl;
-    Root->DownToUp(Root);
+    //cout << endl;
+    //Root->UpToDown(Root);
+    //cout << endl;
+    //Root->DownToUp(Root);
     cout << endl << "Size = " << Root->Size(Root);
     cout << endl << "Sum = " << Root->Sum(Root);
     cout << endl << "Height = " << Root->Height(Root);

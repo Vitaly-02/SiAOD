@@ -48,15 +48,18 @@ public:
         int nl, nr;
         nl = n / 2;
         nr = n - nl - 1;
-        if ((nl == 0)||(nr == 0)) { 
-            ptr = nullptr;
+        if ((nl == 0) && (nr == 0)) {
+            return;
+        } else
+        if (nl == 0) {
+            ptr->initRight();
             return; 
         }
+        else if (nr == 0) {
+            ptr->initLeft();
+            return;
+        }
         else {
-            //nl = n / 2;
-            //nr = n - nl - 1;
-            //ptr->initLeft();
-            //ptr->initRight();
             ptr->initLeft();
             makeIdeal(ptr->Left, nl);
             ptr->initRight();

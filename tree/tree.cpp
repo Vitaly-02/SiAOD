@@ -44,6 +44,25 @@ public:
         ptr->initLeft();
         ptr->initRight();
     }
+    void makeIdeal(Vertex* ptr, int n) {
+        int nl, nr;
+        nl = n / 2;
+        nr = n - nl - 1;
+        if ((nl == 0)||(nr == 0)) { 
+            ptr = nullptr;
+            return; 
+        }
+        else {
+            //nl = n / 2;
+            //nr = n - nl - 1;
+            //ptr->initLeft();
+            //ptr->initRight();
+            ptr->initLeft();
+            makeIdeal(ptr->Left, nl);
+            ptr->initRight();
+            makeIdeal(ptr->Right, nr); 
+        }
+    }
     int i = 0;
     void LeftToRight(Vertex* ptr) {
         
@@ -121,13 +140,21 @@ int main() {
     Vertex* Root = new Vertex;
     Root->makeTree5(Root);
     Root->LeftToRight(Root);
-    //cout << endl;
-    //Root->UpToDown(Root);
-    //cout << endl;
-    //Root->DownToUp(Root);
+    cout << endl;
+    Root->UpToDown(Root);
+    cout << endl;
+    Root->DownToUp(Root);
     cout << endl << "Size = " << Root->Size(Root);
     cout << endl << "Sum = " << Root->Sum(Root);
     cout << endl << "Height = " << Root->Height(Root);
     cout << endl << "Mid Height = " << Root->midHeight(Root);
+    cout << endl;
+    Vertex* Idea = new Vertex;
+    Idea->makeIdeal(Idea, 100);
+    Idea->LeftToRight(Idea);
+    cout << endl << "Size = " << Idea->Size(Idea);
+    cout << endl << "Sum = " << Idea->Sum(Idea);
+    cout << endl << "Height = " << Idea->Height(Idea);
+    cout << endl << "Mid Height = " << Idea->midHeight(Idea);
     return 0;
 }

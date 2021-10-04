@@ -1,12 +1,13 @@
 ﻿#include <iostream>
 #include <time.h>
-// variant dereva 5
+// variant dereva 4
 using namespace std;
 
 class Vertex {
 private:
     int Data;
     int Index = 0;
+    int Level = 0;
     Vertex* Left = nullptr;
     Vertex* Right = nullptr;
 
@@ -15,7 +16,7 @@ public:
         Data = D;
     }
     void printData() {
-        cout /*<< "Lvl: " << Index  << "-"*/ << Data << " ||";
+        cout << "Index: " << Index  << " Data: " << Data << " \n ";
     }
     void setLeft(Vertex* ptr) {
         Left = ptr;
@@ -26,21 +27,21 @@ public:
     void initLeft() {
         Vertex* left = new Vertex;
         Left = left;
-        Left->Index = Index + 1;
+        Left->Level = Level + 1;
     }
     void initRight() {
         Vertex* right = new Vertex;
         Right = right;
-        Right->Index = Index + 1;
+        Right->Level = Level + 1;
     }
-    void makeTree5(Vertex* Root) {
+    void makeTree4(Vertex* Root) {
         //Vertex* ptr = Root;
         Root->initLeft(); 
         Root->initRight();
         Vertex* ptr = Root;
         ptr = ptr->Right;
-        ptr->initRight();
-        ptr = Root->Left;
+        ptr->initLeft();
+        ptr = ptr->Left;
         ptr->initLeft();
         ptr->initRight();
     }
@@ -71,16 +72,18 @@ public:
         
         if (ptr != nullptr) {
             LeftToRight(ptr->Left);
-            
-            ptr->Data = i;
-            i++;               // zapolnenie
-            ptr->printData();  // po poruadku
+            //ptr->Data = i;
+            //i++;               // zapolnenie
+            ptr->printData();    // po poruadku
             
             LeftToRight(ptr->Right);
         }
     }
     void UpToDown(Vertex* ptr) {
         if (ptr != nullptr) {
+            ptr->Data = rand() % 10;
+            ptr->Index = i;
+            i++;
             ptr->printData();
             UpToDown(ptr->Left);
             UpToDown(ptr->Right);
@@ -130,7 +133,7 @@ public:
             return path;
         }
         else {
-            path = 1 + ptr->Index + Path(ptr->Left) + Path(ptr->Right);
+            path = 1 + ptr->Level + Path(ptr->Left) + Path(ptr->Right);
         }
         return path;
     }
@@ -141,12 +144,12 @@ public:
 
 int main() {
     Vertex* Root = new Vertex;
-    Root->makeTree5(Root);
-    Root->LeftToRight(Root);
-    cout << endl;
+    Root->makeTree4(Root);
     Root->UpToDown(Root);
     cout << endl;
-    Root->DownToUp(Root);
+    Root->LeftToRight(Root);
+    //cout << endl;
+    //Root->DownToUp(Root);
     cout << endl << "Size = " << Root->Size(Root);
     cout << endl << "Sum = " << Root->Sum(Root);
     cout << endl << "Height = " << Root->Height(Root);
@@ -154,6 +157,8 @@ int main() {
     cout << endl;
     Vertex* Idea = new Vertex;
     Idea->makeIdeal(Idea, 100);
+    Idea->UpToDown(Idea);
+    cout << "\nIt's Left to Right\n\n";
     Idea->LeftToRight(Idea);
     cout << endl << "Size = " << Idea->Size(Idea);
     cout << endl << "Sum = " << Idea->Sum(Idea);
